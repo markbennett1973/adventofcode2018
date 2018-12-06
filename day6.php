@@ -3,7 +3,7 @@
 const DUPLICATES = -1;
 
 print "Part 1: " . part1() . "\n";
-// print "Part 2: " . part2() . "\n";
+print "Part 2: " . part2() . "\n";
 
 function part1(): int
 {
@@ -12,11 +12,20 @@ function part1(): int
     return findLargestArea($map);
 }
 
+function part2(): int
+{
+    $coords = getCoords();
+    $map = buildDistanceMap($coords);
+    return countPointsAboveThreshold($map, 10000);
+}
+
 function getCoords(): array
 {
     $coords = [];
     foreach (explode("\n", file_get_contents('day6-input.txt')) as $line) {
-        $coords[] = Coord::createFromString($line);
+        if ($coord = Coord::createFromString($line)) {
+            $coords[] = $coord;
+        }
     }
 
     return $coords;
@@ -103,20 +112,77 @@ function findLargestArea(array $map): int
     return max($areas);
 }
 
+/**
+ * @param array|Coord[] $coords
+ * @return array
+ */
+function buildDistanceMap(array $coords): array
+{
+    $extents = getGridExtents($coords);
+    $map = [];
+    for ($row = 0; $row <= $extents->y; $row++) {
+        for ($col = 0; $col <= $extents->x; $col++) {
+            $map[$row][$col] = findTotalCoordDistance($row, $col, $coords);
+        }
+    }
+
+    return $map;
+}
+
+function findTotalCoordDistance(int $row, int $col, array $coords): int
+{
+    $sourceCoord = Coord::createFromCoords($col, $row);
+    $totalDistance = 0;
+    foreach ($coords as $coord) {
+        $totalDistance += $sourceCoord->getDistance($coord);
+    }
+
+    return $totalDistance;
+}
+
+function countPointsAboveThreshold(array $map, int $threshold): int
+{
+    $points = 0;
+
+    foreach ($map as $row => $cols) {
+        foreach ($cols as $value) {
+            if ($value < $threshold) {
+                $points++;
+            }
+        }
+    }
+
+    return $points;
+}
+
 class Coord
 {
     public $x;
     public $y;
 
-    public static function createFromString(string $string): Coord
+    /**
+     * @param string $string
+     * @return Coord|null
+     */
+    public static function createFromString(string $string)
     {
         $parts = explode(',', $string);
-        $coord = new Coord();
-        $coord->x = (int) $parts[0];
-        $coord->y = (int) $parts[1];
-        return $coord;
+
+        if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
+            $coord = new Coord();
+            $coord->x = (int)$parts[0];
+            $coord->y = (int)$parts[1];
+            return $coord;
+        }
+
+        return null;
     }
 
+    /**
+     * @param int $x
+     * @param int $y
+     * @return Coord
+     */
     public static function createFromCoords(int $x, int $y): Coord
     {
         $coord = new Coord();
