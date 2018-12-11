@@ -70,16 +70,15 @@ function getNextElf(int $currentElf, int $numberOfElves): int
  */
 function doMove1(int $marbleScore, Marble $currentMarble): Marble
 {
-    $newMarble = new Marble($marbleScore);
     $targetMarble = getMarbleOffset($currentMarble, 1);
     $next = $targetMarble->nextMarble;
+    $newMarble = new Marble($marbleScore);
 
     // Slot in the new marble after the target marble
-    $targetMarble->nextMarble = $newMarble;
-    $next->previousMarble = $newMarble;
-
     $newMarble->previousMarble = $targetMarble;
     $newMarble->nextMarble = $next;
+    $targetMarble->nextMarble = $newMarble;
+    $next->previousMarble = $newMarble;
 
     return $newMarble;
 }
