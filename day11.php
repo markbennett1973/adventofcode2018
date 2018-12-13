@@ -5,7 +5,7 @@ const MAP_SIZE = 300;
 const MIN_GRID_SIZE = 3;
 const MAX_GRID_SIZE = 300;
 
-// print "Part 1: " . part1() . "\n";
+print "Part 1: " . part1() . "\n";
 print "Part 2: " . part2() . "\n";
 
 function part1(): string
