@@ -1,4 +1,4 @@
-# Sadly not my solution - my part 2 doesn't generate the right answer
+# Sadly not my solution - I needed a correct solution to help debugging mine
 # https://www.reddit.com/r/adventofcode/comments/a5qd71/2018_day_13_solutions/ebolyq6/
 
 from collections import defaultdict
@@ -101,5 +101,6 @@ def solve_b(input_file_lines: List[str]) -> str:
 with open('day13-input.txt') as f:
     lines = f.read().splitlines()
 
+print(solve_a(lines))
 print(solve_b(lines))
 

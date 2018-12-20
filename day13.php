@@ -3,7 +3,7 @@
 // const INPUT_FILE = 'small.txt';
 const INPUT_FILE = 'day13-input.txt';
 
-// print "Part 1: " . part1() . "\n";
+print "Part 1: " . part1() . "\n";
 print "Part 2: " . part2() . "\n";
 
 function part1(): string
@@ -39,7 +39,6 @@ function part2(): string
 {
     $map = $carts = [];
     getMapAndCarts($map, $carts);
-    // drawMap($map, $carts);
 
     $loops = 0;
     while (true) {
@@ -54,17 +53,12 @@ function part2(): string
             }
         }
 
-        // drawMap($map, $carts);
-
         if (count($carts) === 1) {
             $cart = reset($carts);
             return $cart->getCoordsAsString();
         }
 
         $loops++;
-        if ($loops % 100 === 0) {
-            print "Done $loops loops\n";
-        }
     }
 
     return '';
@@ -432,10 +426,10 @@ class Cart
                          $this->direction = self::DIR_UP;
                      } else {
                          // We've got track above and below. One must be horizontal, so we can't go that way
-                         if ($above->direction === Track::DIR_HORIZONTAL) {
-                             $this->direction = self::DIR_DOWN;
-                         } else {
+                         if ($below->direction === Track::DIR_HORIZONTAL) {
                              $this->direction = self::DIR_UP;
+                         } else {
+                             $this->direction = self::DIR_DOWN;
                          }
                      }
                  }
