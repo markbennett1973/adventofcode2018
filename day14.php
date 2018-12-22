@@ -1,6 +1,6 @@
 <?php
 
-const INPUT = "702831";
+const INPUT = "37";
 const LIMIT = 18;
 const TARGET = "702831";
 
@@ -34,16 +34,21 @@ function part2(): int
         $positions[$i] = $i;
     }
 
-    while (strpos($scoreboard, TARGET, 1) === false) {
+    while (true) {
         $scoreboard = addNewScores($scoreboard, $positions);
         moveElves($scoreboard, $positions);
         // printScoreboard($scoreboard);
         if (strlen($scoreboard) % 10000 === 0) {
-            print "Scoreboard is " . strlen($scoreboard) . " long\n";
+            print "Scoreboard is " . number_format(strlen($scoreboard)) . " long\n";
+        }
+
+        $start = strlen($scoreboard) - strlen(TARGET);
+        if ($start && substr($scoreboard, $start) === TARGET) {
+            return strlen($scoreboard) - strlen(TARGET);
         }
     }
 
-    return strlen($scoreboard) - strlen(TARGET);
+    return 0;
 }
 
 function addNewScores(string $scoreboard, array $positions): string
