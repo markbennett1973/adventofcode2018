@@ -2,8 +2,9 @@
 
 //const INPUT_FILE = 'small.txt';
 const INPUT_FILE = 'day24-input.txt';
+const BOOST = 34;
 
-// print "Part 1: " . part1() . "\n";
+print "Part 1: " . part1() . "\n";
 part2();
 
 function part1(): int
@@ -20,7 +21,7 @@ function part2()
     $groups = getGroups();
     $immuneGroups = $groups['immune'];
     $infectionGroups = $groups['infection'];
-    applyBoost($immuneGroups, 34);
+    applyBoost($immuneGroups, BOOST);
     doFight($immuneGroups, $infectionGroups);
     printWinner($immuneGroups, $infectionGroups);
 }
@@ -56,13 +57,9 @@ function doFight(array &$immuneGroups, array &$infectionGroups)
     chooseTargets($immuneGroups, $infectionGroups);
 
     while (!isFightOver($immuneGroups, $infectionGroups)) {
-        printStatus($immuneGroups, $infectionGroups);
+        // printStatus($immuneGroups, $infectionGroups);
         chooseTargets($immuneGroups, $infectionGroups);
         attackTargets($immuneGroups, $infectionGroups);
-
-        if (count($immuneGroups) === 1 && count($infectionGroups) === 1) {
-            $x = 1;
-        }
     }
 }
 
@@ -85,10 +82,6 @@ function printStatus(array $immuneGroups, array $infectionGroups)
 {
     static $count = 0;
     $count++;
-
-    if ($count > 2000) {
-        $x = 1;
-    }
 
     $message = 'Immune units: ';
     foreach ($immuneGroups as $immuneGroup) {
